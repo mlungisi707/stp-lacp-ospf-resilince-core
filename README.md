@@ -73,7 +73,7 @@ To test BPDU Guard, a rogue switch (a Cisco IOL L2 node, `iol-l2-0`) was connect
 
 ![BPDU Guard violation log on Switch-A after the rogue switch was connected to Gi0/0](12-rogue-device-bpdu-violation.png)
 
-![show interfaces status err-disabled on Switch-A showing Gi0/0 disabled](evidence/13-bpduguard-errdisable-mitigation.png)
+![show interfaces status err-disabled on Switch-A showing Gi0/0 disabled](13-bpduguard-errdisable-mitigation.png)
 
 ## Failover Test
 Port-channel 1 on Switch-A was shut down (`interface port-channel 1`, then `shutdown`) while Router-1 ran `ping 10.10.10.2 repeat 10000 timeout 1`.
