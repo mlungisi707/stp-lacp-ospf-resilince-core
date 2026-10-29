@@ -38,47 +38,47 @@ Trunks and LACP bundles were configured across the switches.
 
 ![show interfaces trunk on Switch-B showing VLANs 10 and 20 allowed on trunk ports](evidence/02-trunking-database-status.png)
 
-![show etherchannel summary on Switch-A showing the LACP bundle](evidence/03-etherchannel-lacp-bundle.png)
+![show etherchannel summary on Switch-A showing the LACP bundle](03-etherchannel-lacp-bundle.png)
 
 ### Phase 2: Spanning tree
 Switch-A was made root bridge by lowering its bridge priority.
 
-![show spanning-tree vlan 10 on Switch-A confirming it is the root bridge](evidence/04-deterministic-root-bridge.png)
+![show spanning-tree vlan 10 on Switch-A confirming it is the root bridge](04-deterministic-root-bridge.png)
 
-![show spanning-tree vlan 10 on Switch-C showing Gi0/3 as Altn BLK under normal conditions](evidence/05-stp-blocked-port-normal.png)
+![show spanning-tree vlan 10 on Switch-C showing Gi0/3 as Altn BLK under normal conditions](05-stp-blocked-port-normal.png)
 
 ### Phase 3: Access port protection
 `show spanning-tree summary` on Switch-A confirms Rapid PVST+ mode, PortFast edge default, and BPDU Guard default enabled.
 
-![show spanning-tree summary on Switch-A showing PortFast edge default and BPDU Guard default enabled](evidence/06-portfast-bpduguard-global.png)
+![show spanning-tree summary on Switch-A showing PortFast edge default and BPDU Guard default enabled](06-portfast-bpduguard-global.png)
 
 ### Phase 4: Inter-VLAN routing
 Router-1 and Router-2 were configured with sub-interfaces for VLANs 10 and 20, and connectivity between them was tested.
 
-![Router-1 interface configuration](evidence/07-router-1-int-addressing.png)
+![Router-1 interface configuration](07-router-1-int-addressing.png)
 
-![Router-2 interface configuration](evidence/08-router-2-int-addressing.png)
+![Router-2 interface configuration](08-router-2-int-addressing.png)
 
-![Router-1 ping to 10.10.10.2 before failover testing](evidence/09-initial-gateway-ping.png)
+![Router-1 ping to 10.10.10.2 before failover testing](09-initial-gateway-ping.png)
 
 ### Phase 5: OSPFv2
 Both routers run OSPF in Area 0. Both routers share the VLAN subnets as directly connected networks, so OSPF has no learned routes to install; adjacency and database state were used for verification.
 
-![show ip ospf neighbor showing FULL adjacency on both sub-interfaces](evidence/10-ospf-neighbor-table.png)
+![show ip ospf neighbor showing FULL adjacency on both sub-interfaces](10-ospf-neighbor-table.png)
 
-![show ip ospf database showing both router IDs](evidence/11-link-state-database.png)
+![show ip ospf database showing both router IDs](11-link-state-database.png)
 
 ## BPDU Guard Test
 To test BPDU Guard, a rogue switch (a Cisco IOL L2 node, `iol-l2-0`) was connected to Switch-A Gi0/0, an access port. Switch-A received a BPDU on that port and err-disabled it.
 
-![BPDU Guard violation log on Switch-A after the rogue switch was connected to Gi0/0](evidence/12-rogue-device-bpdu-violation.png)
+![BPDU Guard violation log on Switch-A after the rogue switch was connected to Gi0/0](12-rogue-device-bpdu-violation.png)
 
 ![show interfaces status err-disabled on Switch-A showing Gi0/0 disabled](evidence/13-bpduguard-errdisable-mitigation.png)
 
 ## Failover Test
 Port-channel 1 on Switch-A was shut down (`interface port-channel 1`, then `shutdown`) while Router-1 ran `ping 10.10.10.2 repeat 10000 timeout 1`.
 
-![show spanning-tree vlan 10 on Switch-C showing Gi0/3 moved from Altn BLK to Desg FWD](evidence/14-stp-port-convergence.png)
+![show spanning-tree vlan 10 on Switch-C showing Gi0/3 moved from Altn BLK to Desg FWD](14-stp-port-convergence.png)
 
 
 **Result:** Switch-C's Gi0/3 moved from Altn BLK to Desg FWD, restoring a path around the failed Port-channel. The ping returned 9,982 of 10,000 replies, so 18 were lost. Because each lost reply waits out the 1-second timeout, this corresponds to roughly 18 seconds without connectivity. An earlier run lost 35 replies, so convergence time varied between runs. Both results are slower than the figures commonly quoted for Rapid PVST+.
