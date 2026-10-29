@@ -8,7 +8,7 @@ This lab builds a resilient Layer 2 and Layer 3 core in Cisco CML. It segments b
 **Demo video:** [Watch the failover test on YouTube](https://youtu.be/g_wd18Umb7g)
 
 ## Topology
-![CML topology showing three switches in a triangle, two gateway routers, and the rogue switch used for the BPDU Guard test](evidence/01-spanning-tree-topology.png)
+![CML topology showing three switches in a triangle, two gateway routers, and the rogue switch used for the BPDU Guard test](01-spanning-tree-topology.png)
 
 ## Addressing Plan
 | VLAN | Subnet | Router-1 gateway | Router-2 |
@@ -36,7 +36,7 @@ OSPF router IDs: Router-1 `1.1.1.1`, Router-2 `2.2.2.2`.
 ### Phase 1: Switching core
 Trunks and LACP bundles were configured across the switches.
 
-![show interfaces trunk on Switch-B showing VLANs 10 and 20 allowed on trunk ports](evidence/02-trunking-database-status.png)
+![show interfaces trunk on Switch-B showing VLANs 10 and 20 allowed on trunk ports](02-trunking-database-status.png)
 
 ![show etherchannel summary on Switch-A showing the LACP bundle](03-etherchannel-lacp-bundle.png)
 
